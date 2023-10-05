@@ -6,7 +6,7 @@ import (
 )
 
 type cache struct {
-	mu         sync.Mutex
+	mu         sync.Mutex //支持并发读写
 	lru        *lru.Cache
 	cacheBytes int64
 }
@@ -14,7 +14,7 @@ type cache struct {
 func (c *cache) add(key string, value ByteView) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	if c.lru == nil {
+	if c.lru == nil { //延迟初始化，lazy Initialization
 		c.lru = lru.New(c.cacheBytes, nil)
 	}
 	c.lru.Add(key, value)

@@ -16,6 +16,7 @@ func (f GetterFunc) Get(key string) ([]byte, error) {
 	return f(key)
 }
 
+// 负责与用户的交互，控制缓存值存储和获取的流程
 type Group struct {
 	name      string
 	getter    Getter

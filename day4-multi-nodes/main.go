@@ -55,7 +55,7 @@ func main() {
 	flag.IntVar(&port, "port", 8001, "Geecache server port")
 	flag.BoolVar(&api, "api", false, "Start a api server?")
 	flag.Parse()
-
+	api = true
 	apiAddr := "http://localhost:9999"
 	addrMap := map[int]string{
 		8001: "http://localhost:8001",
@@ -68,8 +68,8 @@ func main() {
 		addrs = append(addrs, v)
 	}
 	gee := createGroup()
-	if api {
+	if api { //启动一个api服务，与用户进行交互
 		go startAPIServer(apiAddr, gee)
 	}
-	startCacheServer(addrMap[port], []string(addrs), gee)
+	startCacheServer(addrMap[port], []string(addrs), gee) //启动缓存服务器： 创建HTTPPool，添加节点信息，注册到gee中，启动HTTP服务
 }
